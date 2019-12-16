@@ -14,10 +14,12 @@ var server = http.createServer(function(req,res){
     var path = parsedUrl.pathname;
     // console.log("path is " ,parsedUrl.path); this also can be used insted of trimmedPath
     var trimmedPath = path.replace(/^\/+|\/+$/g, '');           
+    // get the http method
+    var method = req.method.toLowerCase();
     // send the response
     res.end("Server created\n");
     // Log the request/response
-    console.log('Request received on path: '+trimmedPath);
+    console.log('Request received on path: '+trimmedPath + ' with method', method);
 })
 
  // start the server and run on port 3000
