@@ -13,6 +13,7 @@
  var url = require("url");
  var StringDecoder = require("string_decoder").StringDecoder // for payload
  var config = require('./config');
+ var _data = require('./lib/data');
  // Instantiate http server
 var httpServer = http.createServer(function(req,res){
     unifiedServer(req,res);
