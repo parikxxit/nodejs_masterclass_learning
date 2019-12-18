@@ -12,8 +12,10 @@
  var fs = require("fs"); // to read https file
  var url = require("url");
  var StringDecoder = require("string_decoder").StringDecoder // for payload
- var config = require('./config');
+ var config = require('./lib/config');
  var _data = require('./lib/data');
+ var handlers = require('./lib/handler');
+ var helper = require('./lib/helper');
  // Instantiate http server
 var httpServer = http.createServer(function(req,res){
     unifiedServer(req,res);
@@ -70,10 +72,9 @@ var unifiedServer = function(req,res) {
             'queryStringObject' : queryStringObject,
             'method' : method,
             'headers' : headers,
-            'payload' : buffer
+            'payload' : helper.parseJSONToObject(buffer)
         }
         // route the request to the handler
-
         chosenHandler(data,function(statusCode, payload){
             // Use the status code callback by the handler or defauld 200
             // User the payload by the handler or empty object
@@ -94,24 +95,9 @@ var unifiedServer = function(req,res) {
     });
 }
 
-
-// define handlers 
-var handlers = {};
-// handlers.sample = function(data, callback) {
-//     //callback http status code
-//     //payload object
-//     callback(406,{'name' : 'sample handler'})//sample response
-// }
-//not found handler
-handlers.notFound = function(data, callback) {
-    callback(404);
-}
-// Ping handlers
-handlers.ping = function(data,callback) {
-    callback(200);
-}
 // define a request router
 var router = {
     // 'sample' : handlers.sample,
-    'ping' : handlers.ping
+    'ping' : handlers.ping,
+    'users' : handlers.users
 }
